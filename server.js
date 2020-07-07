@@ -22,3 +22,4 @@ app.listen(PORT, (req,res)=>{
     console.log(`Currently Running on http://localhost:${PORT}`)
 })
 
+// One route at a time, push, deploy, troubleshoot.
