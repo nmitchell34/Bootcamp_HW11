@@ -24,18 +24,17 @@ var noteData = require("./db/db.json");
 
 app.get("/api/notes", function (req, res) {
   res.json(noteData);
-  //   fs.readFile("./db/db.json", (err, data) => {
-  //     if (err) throw err;
-  //     let allNotes = JSON.parse(data);
-  //     console.log(allNotes);
-  //   });
 });
 
 app.post("/api/notes", function (req, res) {
   noteData.push(req.body)
-  res.json(true)
-  console.log(noteData);
+  res.json(noteData)
 });
+
+
+app.delete("/api/notes/:id",(req,res)=>{
+    res.send('Delete Request Received')
+})
 //Listening to PORT
 app.listen(PORT, (req, res) => {
   console.log(`Currently Running on http://localhost:${PORT}`);
