@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3000;
 // Data processing for POST routes
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+app.use(express.static('./public/assets'))
 // View/HTML Routes
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/index.html"));
