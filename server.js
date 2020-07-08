@@ -15,11 +15,14 @@ app.get("/", (req, res) => {
 app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, "./public/notes.html"));
   });
-// API/JSON Routes
 
+// API/JSON Routes
+var noteData = require("./db/db.json")
 //Listening to PORT
 app.listen(PORT, (req, res) => {
   console.log(`Currently Running on http://localhost:${PORT}`);
 });
 
+
 // One route at a time, push, deploy, troubleshoot.
+//  git push heroku develop:master will push to heroku the develop code. Testing capabilities.
