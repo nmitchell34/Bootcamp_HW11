@@ -22,19 +22,34 @@ app.get("/notes", (req, res) => {
 // API/JSON Routes
 var noteData = require("./db/db.json");
 
+// app.get("/api/notes", function (req, res) {
+//   res.json(noteData);
+// });
 app.get("/api/notes", function (req, res) {
+  let allNotes = fs.readFileSync("./db/db.json");
+  let jsonAllNotes = JSON.parse(allNotes);
+  res.json(jsonAllNotes);
+});
+
+// app.post("/api/notes", function (req, res) {
+//   noteData.push(req.body);
+//   res.json(noteData);
+// });
+
+app.post("/api/notes", function (req, res) {
+  req.body.id = noteData.length + 1;
+  noteData.push(req.body);
+  fs.writeFile("./db/db.json", JSON.stringify(noteData), (err) => {
+    if (err) throw err;
+    console.log("Data Written");
+  });
   res.json(noteData);
 });
 
-app.post("/api/notes", function (req, res) {
-  noteData.push(req.body)
-  res.json(noteData)
+app.delete("/api/notes/:id", (req, res) => {
+  let allNotes = fs.readFileSync("./db/db.json");
+  console.log(allNotes);
 });
-
-
-app.delete("/api/notes/:id",(req,res)=>{
-    res.send('Delete Request Received')
-})
 //Listening to PORT
 app.listen(PORT, (req, res) => {
   console.log(`Currently Running on http://localhost:${PORT}`);
