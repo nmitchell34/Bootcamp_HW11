@@ -47,9 +47,23 @@ app.post("/api/notes", function (req, res) {
 });
 
 app.delete("/api/notes/:id", (req, res) => {
+  console.log(req.params.id);
   let allNotes = fs.readFileSync("./db/db.json");
-  console.log(allNotes);
+  let jsonAllNotes = JSON.parse(allNotes);
+
+  for (i = 0; i < jsonAllNotes.length; i++) {
+    console.log(jsonAllNotes[i].id);
+    if (jsonAllNotes[i].id == req.params.id) {
+      console.log("It matched the ID");
+      jsonAllNotes.splice(i, 1);
+      fs.writeFile("./db/db.json", JSON.stringify(jsonAllNotes), (err) => {
+        if (err) throw err;
+      });
+    }
+  }
+  res.json(jsonAllNotes);
 });
+
 //Listening to PORT
 app.listen(PORT, (req, res) => {
   console.log(`Currently Running on http://localhost:${PORT}`);
