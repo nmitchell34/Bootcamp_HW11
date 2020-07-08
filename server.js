@@ -7,7 +7,9 @@ const PORT = process.env.PORT || 3000;
 // Data processing for POST routes
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static('./public/assets'))
+
+app.use(express.static("public"));
+
 // View/HTML Routes
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/index.html"));
@@ -21,16 +23,18 @@ app.get("/notes", (req, res) => {
 var noteData = require("./db/db.json");
 
 app.get("/api/notes", function (req, res) {
-  fs.readFile("./db/db.json", (err, data) => {
-    if (err) throw err;
-    let allNotes = JSON.parse(data);
-    console.log(allNotes);
-  });
+  res.json(noteData);
+  //   fs.readFile("./db/db.json", (err, data) => {
+  //     if (err) throw err;
+  //     let allNotes = JSON.parse(data);
+  //     console.log(allNotes);
+  //   });
 });
 
 app.post("/api/notes", function (req, res) {
-  console.log(req);
-  noteData.push(req.body);
+  noteData.push(req.body)
+  res.json(true)
+  console.log(noteData);
 });
 //Listening to PORT
 app.listen(PORT, (req, res) => {
