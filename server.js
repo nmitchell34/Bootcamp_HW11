@@ -7,7 +7,9 @@ const PORT = process.env.PORT || 3000;
 // Data processing for POST routes
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static('./public/assets'))
+
+app.use(express.static("public"));
+
 // View/HTML Routes
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/index.html"));
@@ -20,17 +22,33 @@ app.get("/notes", (req, res) => {
 // API/JSON Routes
 var noteData = require("./db/db.json");
 
+// app.get("/api/notes", function (req, res) {
+//   res.json(noteData);
+// });
 app.get("/api/notes", function (req, res) {
-  fs.readFile("./db/db.json", (err, data) => {
-    if (err) throw err;
-    let allNotes = JSON.parse(data);
-    console.log(allNotes);
-  });
+  let allNotes = fs.readFileSync("./db/db.json");
+  let jsonAllNotes = JSON.parse(allNotes);
+  res.json(jsonAllNotes);
 });
 
+// app.post("/api/notes", function (req, res) {
+//   noteData.push(req.body);
+//   res.json(noteData);
+// });
+
 app.post("/api/notes", function (req, res) {
-  console.log(req);
+  req.body.id = noteData.length + 1;
   noteData.push(req.body);
+  fs.writeFile("./db/db.json", JSON.stringify(noteData), (err) => {
+    if (err) throw err;
+    console.log("Data Written");
+  });
+  res.json(noteData);
+});
+
+app.delete("/api/notes/:id", (req, res) => {
+  let allNotes = fs.readFileSync("./db/db.json");
+  console.log(allNotes);
 });
 //Listening to PORT
 app.listen(PORT, (req, res) => {
